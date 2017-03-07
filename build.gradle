@@ -1,0 +1,61 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    ["releases", "public"].each { r ->
+      maven {
+        url "${nexusBaseUrl}/repositories/${r}"
+        credentials {
+          username nexusUserName
+          password nexusPassword
+        }
+      }
+    }
+  }
+
+  dependencies {
+    classpath "com.xebialabs.gradle.plugins:gradle-xl-plugins-plugin:${xlPluginsPluginVersion}"
+    classpath "com.gradle.publish:plugin-publish-plugin:0.9.1"
+    classpath files('/Users/bmoussaud/Workspace/bmoussaud/jython-gradle-plugin/build/libs/jython-gradle-plugin-0.4.1-dev.1.uncommitted+b83da73.jar')
+    classpath "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
+//    classpath "gradle.plugin.com.hierynomus.gradle.plugins:jython-gradle-plugin:0.4.1-dev"
+  }
+}
+
+
+apply plugin: "com.github.hierynomus.jython"
+apply plugin: "xebialabs.root.opinions"
+apply plugin: "xebialabs.dependency"
+apply plugin: "xebialabs.plugin.xld"
+
+
+group = 'com.xebialabs.deployit.plugins'
+
+dependencyManagement {
+  importConf "com.xebialabs.xl-platform:xl-reference:${xlPlatformVersion}"
+  importConf "com.xebialabs.deployit:xld-reference:${xlDeployVersion}"
+}
+
+
+jython {
+  sourceRepositories += 'https://pypi.python.org/packages/source/${dep.name[0]}/${dep.name}/${dep.name.replaceAll(\'-\', \'_\')}-${dep.version}.tar.gz'
+}
+
+
+dependencies {
+  jython(":six:1.4.0") {
+    artifact {
+      name = "six"
+      extension = "py"
+      type = "py"
+    }
+  }
+  //jython ":kubernetes:1.0.0"
+  jython ":PyYAML:3.12:lib/yaml"
+  //jython ":certifi:2017.1.23"
+  //jython ":httplib2:0.10.3"
+  //jython ":oauth2client:4.0.0"
+  //jython ":pyasn1-modules:0.0.8"
+  ///jython ":urllib3:1.20"
+}
+
+tasks['xlPlugin'].mustRunAfter tasks.withType(Test)
