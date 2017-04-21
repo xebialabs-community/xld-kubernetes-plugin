@@ -8,3 +8,5 @@ pip install pykube
 Installing collected packages: oauthlib, requests-oauthlib, pytz, tzlocal, pykube
 Successfully installed oauthlib-2.0.1 pykube-0.14.0 pytz-2016.10 requests-oauthlib-0.8.0 tzlocal-1.3
 
+Installing collected packages: MarkupSafe, jinja2
+Successfully installed MarkupSafe-1.0 jinja2-2.9.5

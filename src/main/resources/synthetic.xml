@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    Note: If you modify this file, you must restart the XL Deploy server.
+-->
+<synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd"
+           xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <type type="php.Folder" extends="file.Folder">
+        <property name="textFileNamesRegex" hidden="true"
+                  default=".+\.(php | phpx | config | ini | properties | props )"/>
+        <property name="scanPlaceholders" kind="boolean" default="true" hidden="false"/>
+    </type>
+
+
+    <type type="kubernetes.Cluster" extends="udm.BaseContainer" description="Kubernetes cluster" root="INFRASTRUCTURE">
+        <property name="host" required="false" kind="ci" referenced-type="overthere.Host"/>
+    </type>
+
+    <type type="kubernetes.Container" deployable-type="kubernetes.ContainerSpec" container-type="kubernetes.Pod"
+          extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="kubernetes.ContainerSpec" extends="udm.BaseEmbeddedDeployable"/>
+        <property name="image" required="true"/>
+        <property name="imagePullPolicy" required="false" default="Always" kind="enum">
+            <enum-values>
+                <value>Always</value>
+                <value>Never</value>
+                <value>IfNotPresent</value>
+            </enum-values>
+        </property>
+        <property name="command" required="false" kind="list_of_string"/>
+        <property name="args" required="false" kind="list_of_string"/>
+        <property name="workingDir" required="false"/>
+        <property category="Network" name="ports" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ContainerPort" as-containment="true" description="Container Port "/>
+        <property category="Process" name="env" required="false" kind="map_string_string"
+                  description="List of environment variables to set in the container. Cannot be updated."/>
+        <property category="Resources" name="requests" required="false" kind="map_string_string"
+                  description="Requests describes the minimum amount of compute resources required. "/>
+        <property category="Resources" name="limits" required="false" kind="map_string_string"
+                  description="Limits describes the maximum amount of compute resources allowed"/>
+        <property category="Volumes" name="volumeMounts" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ContainerVolume" as-containment="true" description="Container Volume "/>
+        <property category="Security" name="securityContext" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ContainerSecurityContext" as-containment="true"/>
+        <property category="Probe" name="probes" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ContainerProbe" as-containment="true"
+                  description="Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated."/>
+    </type>
+
+    <type-modification type="kubernetes.ContainerSpec">
+        <property category="Network" name="ports" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ContainerPortSpec" as-containment="true" description="Container Port "/>
+        <property category="Volumes" name="volumeMounts" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ContainerVolumeSpec" as-containment="true"
+                  description="Container Volume "/>
+        <property category="Security" name="securityContext" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ContainerSecurityContextSpec" as-containment="true"/>
+        <property category="Probe" name="probes" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ContainerProbeSpec" as-containment="true"
+                  description="Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated."/>
+    </type-modification>
+
+
+    <!-- https://kubernetes.io/docs/api-reference/v1/definitions/#_v1_volumemount -->
+    <type type="kubernetes.ContainerVolume" deployable-type="kubernetes.ContainerVolumeSpec"
+          container-type="kubernetes.Container" extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="kubernetes.ContainerVolumeSpec" extends="udm.BaseEmbeddedDeployable"
+                             description="Specification for a kubernetes container volumes"/>
+        <property name="readOnly" required="false" kind="boolean" default="false"
+                  description="Mounted read-only if true, read-write otherwise (false or unspecified). "/>
+        <property name="mountPath" required="true"
+                  description="Path within the container at which the volume should be mounted. Must not contain :."/>
+        <property name="subPath" required="false"
+                  description="Path within the volume from which the container’s volume should be mounted. Defaults to  (volume’s root)."/>
+    </type>
+
+
+    <!-- https://kubernetes.io/docs/api-reference/v1/definitions/#_v1_containerport -->
+    <type type="kubernetes.ContainerPort" deployable-type="kubernetes.ContainerPortSpec"
+          container-type="kubernetes.Container" extends="udm.BaseEmbeddedDeployed" description="Port binding.">
+        <generate-deployable type="kubernetes.ContainerPortSpec" extends="udm.BaseEmbeddedDeployable"
+                             description="Specification for a kubernetes container port binding."/>
+        <property name="hostPort" required="false" kind="integer"
+                  description="Number of port to expose on the host. If specified, this must be a valid port number, 0  x  65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this."/>
+        <property name="containerPort" required="true" kind="integer"
+                  description="Number of port to expose on the pod’s IP address"/>
+        <property name="protocol" default="TCP" required="false"
+                  description="Protocol for port. Must be UDP or TCP. Defaults to 'TCP'"/>
+        <property name="hostIP" required="false" description="What host IP to bind the external port to"/>
+    </type>
+
+    <!-- https://kubernetes.io/docs/api-reference/v1/definitions/#_v1_probe -->
+    <type type="kubernetes.ContainerProbe" deployable-type="kubernetes.ContainerProbeSpec"
+          container-type="kubernetes.Container" extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="kubernetes.ContainerProbeSpec" extends="udm.BaseEmbeddedDeployable"/>
+        <property name="httpget_path" label="HttpGet Path" required="false"
+                  description="Path to access on the HTTP server."/>
+        <property name="httpget_port" label="HttpGet Port" kind="integer" required="false"
+                  description="Name or number of the port to access on the container. "/>
+        <property name="initialDelaySeconds" required="false" kind="integer"
+                  description="Number of seconds after the container has started before liveness probes are initiated. "/>
+        <property name="periodSeconds" required="false" kind="integer"
+                  description="How often (in seconds) to perform the probe. "/>
+    </type>
+
+    <!-- https://kubernetes.io/docs/api-reference/v1/definitions/#_v1_securitycontext -->
+    <type type="kubernetes.ContainerSecurityContext" deployable-type="kubernetes.ContainerSecurityContextSpec"
+          container-type="kubernetes.Container" extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="kubernetes.ContainerSecurityContextSpec" extends="udm.BaseEmbeddedDeployable"
+                             description="Specification for a kubernetes container security"/>
+        <property name="runAsNonRoot" required="false" kind="boolean" default="false"/>
+        <property name="readOnlyRootFilesystem" required="false" kind="boolean" default="false"/>
+        <property name="runAsUser" required="false"
+                  description="The UID to run the entrypoint of the container process. "/>
+        <property name="privileged" default="false" required="true"
+                  description="Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the hos"/>
+        <property name="dropCapabilities" required="false" kind="list_of_string"/>
+        <property name="addCapabilities" required="false" kind="list_of_string"/>
+    </type>
+
+    <type type="kubernetes.Volume" deployable-type="kubernetes.VolumeSpec" container-type="kubernetes.Pod"
+          extends="udm.BaseEmbeddedDeployed">
+        <generate-deployable type="kubernetes.VolumeSpec" extends="udm.BaseEmbeddedDeployable"/>
+        <property name="emptyDir" required="false" kind="boolean" default="true"/>
+        <property name="emptyDirMedium" required="false"
+                  description="What type of storage medium should back this directory. The default is '' which means to use the node’s default medium. Must be an empty string (default) or Memory"/>
+        <property name="configMapName" required="false"/>
+    </type>
+
+    <type type="kubernetes.Pod" deployable-type="kubernetes.PodSpec" container-type="kubernetes.Cluster"
+          extends="udm.BaseDeployed">
+        <generate-deployable type="kubernetes.PodSpec" extends="udm.BaseDeployable"/>
+        <property name="podName" required="false"/>
+        <property name="containers" kind="set_of_ci" referenced-type="kubernetes.Container" as-containment="true"
+                  description="List of containers belonging to the pod"/>
+        <property name="volumes" kind="set_of_ci" referenced-type="kubernetes.Volume" as-containment="true"
+                  description="List of volumes that can be mounted by containers belonging to the pod"/>
+        <property name="restartPolicy" required="false" default="Always" kind="enum"
+                  description="Restart policy for all containers within the pod">
+            <enum-values>
+                <value>Always</value>
+                <value>OnFailure</value>
+                <value>Never</value>
+            </enum-values>
+        </property>
+        <property category="Strategy" name="strategyType" required="false" default="rollingUpdate" kind="enum">
+            <enum-values>
+                <value>rollingUpdate</value>
+                <value>recreate</value>
+            </enum-values>
+        </property>
+        <property category="Strategy" name="rollingUpdateMaxSurge" required="false"/>
+        <property category="Strategy" name="rollingUpdateMaxUnavailable" required="false"/>
+        <property category="Node" name="nodeSelector" required="false"
+                  description="NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node’s labels for the pod to be scheduled on that node"/>
+        <property category="Node" name="nodeName" required="false"
+                  description="NodeName is a request to schedule this pod onto a specific node. If it is non-empty, the scheduler simply schedules this pod onto that node, assuming that it fits resource requirements."/>
+        <property category="Node" name="selectorMatchLabels" required="false" kind="map_string_string"/>
+        <property category="Deployment" name="replicas" required="false" default="1" kind="integer"/>
+        <property category="Deployment" name="url" required="false"/>
+        <property category="Metadata" name="labels" required="false" kind="map_string_string"/>
+        <property category="Metadata" name="namespace" required="false"/>
+        <property category="Metadata" name="annotations" kind="map_string_string" required="false"
+                  description="Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata."/>
+    </type>
+
+    <type-modification type="kubernetes.PodSpec">
+        <property name="containers" kind="set_of_ci" referenced-type="kubernetes.ContainerSpec" as-containment="true"
+                  description="List of containers belonging to the pod"/>
+        <property name="volumes" kind="set_of_ci" referenced-type="kubernetes.VolumeSpec" as-containment="true"
+                  description="List of volumes that can be mounted by containers belonging to the pod"/>
+    </type-modification>
+
+    <type type="kubernetes.ExecutedResourceFile" deployable-type="kubernetes.ResourceFile"
+          extends="udm.BaseDeployedArtifact" container-type="kubernetes.Cluster">
+        <generate-deployable type="kubernetes.ResourceFile" extends="udm.BaseDeployableFileArtifact"/>
+        <property category="Advanced" name="createOrder" kind="integer" default="60"/>
+        <property category="Advanced" name="destroyOrder" kind="integer" default="42"/>
+    </type>
+
+    <type-modification type="kubernetes.ResourceFile">
+        <property name="textFileNamesRegex" default=".+\.(yml | yaml | json | jsonp )" hidden="true"/>
+    </type-modification>
+
+    <type type="kubernetes.Service" extends="udm.BaseDeployed" container-type="kubernetes.Cluster"
+          deployable-type="kubernetes.ServiceSpec">
+        <generate-deployable type="kubernetes.ServiceSpec" extends="udm.BaseDeployable"/>
+        <property name="kind" default="Service" hidden="true"/>
+        <property name="apiVersion" default="v1" hidden="true"/>
+        <property name="serviceName" required="false"/>
+        <property name="selector" kind="map_string_string" required="false"
+                  description="label keys and values that must match in order to receive traffic for this service"/>
+        <property name="serviceType" required="false" kind="enum" default="ClusterIP"
+                  description="type determines how the Service is exposed">
+            <enum-values>
+                <value>ClusterIP</value>
+                <value>ExternalName</value>
+                <value>NodePort</value>
+                <value>LoadBalancer</value>
+            </enum-values>
+        </property>
+        <property category="Metadata" name="namespace" required="false"/>
+        <property category="Metadata" name="labels" kind="map_string_string" required="false"
+                  description="label keys and values that must match in order to receive traffic for this service"/>
+        <property category="Metadata" name="annotations" kind="map_string_string" required="false"/>
+        <property category="Network" name="ports" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ServicePort" as-containment="true" description="Service Port "/>
+        <property category="Network" name="clusterIP" required="false"
+                  description="clusterIP is the IP address of the service and is usually assigned randomly by the master. If an address is specified manually and is not in use by others, it will be allocated to the service; otherwise, creation of the service will fail."/>
+        <property category="Network" name="loadBalancerIP" required="false"/>
+        <property category="Deployment" name="url" required="false"/>
+        <property category="Metadata" name="namespace" required="false"/>
+    </type>
+
+    <type type="kubernetes.ServicePort" deployable-type="kubernetes.ServicePortSpec" container-type="kubernetes.Service"
+          extends="udm.BaseEmbeddedDeployed" description="Port binding.">
+        <generate-deployable type="kubernetes.ServicePortSpec" extends="udm.BaseEmbeddedDeployable"
+                             description="Specification for a kubernetes service port binding."/>
+        <property name="targetPort" required="false" kind="integer"/>
+        <property name="port" required="true" kind="integer"/>
+        <property name="nodePort" required="false" kind="integer"/>
+        <property name="protocol" default="TCP" required="false"
+                  description="Protocol used by the specified port binding. For example: udp or tcp"/>
+    </type>
+
+    <type-modification type="kubernetes.ServiceSpec">
+        <property category="Network" name="ports" required="false" kind="set_of_ci"
+                  referenced-type="kubernetes.ServicePortSpec" as-containment="true" description="Service Port "/>
+    </type-modification>
+
+    <type type="kubernetes.Namespace" extends="udm.BaseDeployed" container-type="kubernetes.Cluster"
+          deployable-type="kubernetes.NamespaceSpec">
+        <generate-deployable type="kubernetes.NamespaceSpec" extends="udm.BaseDeployable"/>
+        <property name="kind" default="Namespace" hidden="true"/>
+        <property name="apiVersion" default="v1" hidden="true"/>
+        <property name="namespaceName" required="false"/>
+    </type>
+
+    <type type="kubernetes.ConfigMapFolder" deployable-type="kubernetes.ConfigMapSpecFolder"
+          extends="udm.BaseDeployedArtifact" container-type="kubernetes.Cluster">
+        <generate-deployable type="kubernetes.ConfigMapSpecFolder" extends="udm.BaseDeployableFolderArtifact"/>
+        <property name="namespace" required="false"/>
+    </type>
+
+</synthetic>

@@ -1,0 +1,1 @@
+kubectl create --filename=${deployed.file.path}
