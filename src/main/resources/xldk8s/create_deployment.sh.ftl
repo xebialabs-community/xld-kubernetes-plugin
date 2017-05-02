@@ -92,8 +92,6 @@ spec:
         <#if v.emptyDirMedium??>
         emptyDir:
             medium: ${v.emptyDirMedium}
-        <#else>
-        emptyDir: {}
         </#if>
       </#if>
       <#if v.configMapName??>

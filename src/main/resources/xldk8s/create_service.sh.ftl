@@ -21,6 +21,7 @@ spec:
   ports:
 <#list deployed.ports as port>
   - port: ${port.port}
+    name: port-${port.name}
     <#if port.targetPort??>targetPort: ${port.targetPort}</#if>
     <#if port.nodePort??>nodePort: ${port.nodePort}</#if>
 </#list>
