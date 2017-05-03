@@ -68,7 +68,7 @@ spec:
               - ${a}
     </#list>
           readOnlyRootFilesystem: ${s.readOnlyRootFilesystem?c}
-          runAsNonRoot: ${s.runAsNonRoot?c}
+          <#if s.runAsUser??>runAsNonRoot: ${s.runAsNonRoot?c}</#if>
           <#if s.runAsUser??>runAsUser: ${s.runAsUser}</#if>
   </#list>
   <#list c.probes as p>
