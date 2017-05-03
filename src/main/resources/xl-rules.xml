@@ -159,5 +159,9 @@
         </steps>
     </rule>
 
+    <rule name="kubernetes.stop.start.pods.on.modified.config.map" scope="plan">
+        <planning-script-path>xldk8s/planning/start_stop_pod_on_modified_config_map.py</planning-script-path>
+    </rule>
+
 
 </rules>
