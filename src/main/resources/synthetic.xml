@@ -5,13 +5,6 @@
 -->
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd"
            xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <type type="php.Folder" extends="file.Folder">
-        <property name="textFileNamesRegex" hidden="true"
-                  default=".+\.(php | phpx | config | ini | properties | props )"/>
-        <property name="scanPlaceholders" kind="boolean" default="true" hidden="false"/>
-    </type>
-
-
     <type type="kubernetes.Cluster" extends="udm.BaseContainer" description="Kubernetes cluster" root="INFRASTRUCTURE">
         <property name="host" required="false" kind="ci" referenced-type="overthere.Host"/>
     </type>
@@ -61,7 +54,7 @@
     </type-modification>
 
 
-    <!-- https://kubernetes.io/docs/api-reference/v1/definitions/#_v1_volumemount -->
+    <!-- https://kubernetes.io/docs/api-reference/v1.6/#volumemount-v1-core -->
     <type type="kubernetes.ContainerVolume" deployable-type="kubernetes.ContainerVolumeSpec"
           container-type="kubernetes.Container" extends="udm.BaseEmbeddedDeployed">
         <generate-deployable type="kubernetes.ContainerVolumeSpec" extends="udm.BaseEmbeddedDeployable"
@@ -75,7 +68,7 @@
     </type>
 
 
-    <!-- https://kubernetes.io/docs/api-reference/v1/definitions/#_v1_containerport -->
+    <!-- https://kubernetes.io/docs/api-reference/v1.6/#containerport-v1-core -->
     <type type="kubernetes.ContainerPort" deployable-type="kubernetes.ContainerPortSpec"
           container-type="kubernetes.Container" extends="udm.BaseEmbeddedDeployed" description="Port binding.">
         <generate-deployable type="kubernetes.ContainerPortSpec" extends="udm.BaseEmbeddedDeployable"
@@ -89,7 +82,7 @@
         <property name="hostIP" required="false" description="What host IP to bind the external port to"/>
     </type>
 
-    <!-- https://kubernetes.io/docs/api-reference/v1/definitions/#_v1_probe -->
+    <!-- https://kubernetes.io/docs/api-reference/v1.6/#probe-v1-core-->
     <type type="kubernetes.ContainerProbe" deployable-type="kubernetes.ContainerProbeSpec"
           container-type="kubernetes.Container" extends="udm.BaseEmbeddedDeployed">
         <generate-deployable type="kubernetes.ContainerProbeSpec" extends="udm.BaseEmbeddedDeployable"/>
@@ -103,7 +96,7 @@
                   description="How often (in seconds) to perform the probe. "/>
     </type>
 
-    <!-- https://kubernetes.io/docs/api-reference/v1/definitions/#_v1_securitycontext -->
+    <!-- https://kubernetes.io/docs/api-reference/v1.6/#securitycontext-v1-core -->
     <type type="kubernetes.ContainerSecurityContext" deployable-type="kubernetes.ContainerSecurityContextSpec"
           container-type="kubernetes.Container" extends="udm.BaseEmbeddedDeployed">
         <generate-deployable type="kubernetes.ContainerSecurityContextSpec" extends="udm.BaseEmbeddedDeployable"
