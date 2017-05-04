@@ -7,4 +7,5 @@ metadata:
 " > namespace.yaml
 
 cat namespace.yaml
+export KUBERNETES_MASTER=${deployed.container.url}
 kubectl apply -f namespace.yaml

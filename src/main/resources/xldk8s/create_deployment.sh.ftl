@@ -104,4 +104,5 @@ spec:
 cp ./deployment.yaml  /tmp/x.yaml
 
 cat deployment.yaml
+export KUBERNETES_MASTER=${deployed.container.url}
 kubectl apply -f deployment.yaml

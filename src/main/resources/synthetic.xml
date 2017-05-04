@@ -7,6 +7,7 @@
            xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <type type="kubernetes.Cluster" extends="udm.BaseContainer" description="Kubernetes cluster" root="INFRASTRUCTURE">
         <property name="host" required="false" kind="ci" referenced-type="overthere.Host"/>
+        <property name="url" required="true" />
     </type>
 
     <type type="kubernetes.Container" deployable-type="kubernetes.ContainerSpec" container-type="kubernetes.Pod"
