@@ -104,5 +104,5 @@ spec:
 cp ./deployment.yaml  /tmp/x.yaml
 
 cat deployment.yaml
-export KUBERNETES_MASTER=${deployed.container.url}
+<#include "/xldk8s/setup.ftl">
 kubectl apply -f deployment.yaml

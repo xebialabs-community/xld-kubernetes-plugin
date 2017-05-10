@@ -28,5 +28,5 @@ spec:
 " > service.yaml
 
 cat service.yaml
-export KUBERNETES_MASTER=${deployed.container.url}
+<#include "/xldk8s/setup.ftl">
 kubectl apply -f service.yaml

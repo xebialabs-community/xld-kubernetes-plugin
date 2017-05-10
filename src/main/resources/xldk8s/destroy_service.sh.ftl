@@ -1,3 +1,3 @@
 echo "kubectl delete service ${previousDeployed.name} <#if previousDeployed.namespace??>--namespace  ${previousDeployed.namespace}</#if>"
-export KUBERNETES_MASTER=${previousDeployed.container.url}
+<#include "/xldk8s/setup.ftl">
 kubectl delete service ${previousDeployed.name} <#if previousDeployed.namespace??>--namespace  ${previousDeployed.namespace}</#if>

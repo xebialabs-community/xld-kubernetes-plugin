@@ -7,5 +7,5 @@ metadata:
 " > namespace.yaml
 
 cat namespace.yaml
-export KUBERNETES_MASTER=${deployed.container.url}
+<#include "/xldk8s/setup.ftl">
 kubectl apply -f namespace.yaml

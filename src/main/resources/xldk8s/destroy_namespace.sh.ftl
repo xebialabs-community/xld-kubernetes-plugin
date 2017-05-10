@@ -1,3 +1,3 @@
 echo "kubectl delete namespace ${previousDeployed.namespaceName!previousDeployed.name}"
-export KUBERNETES_MASTER=${previousDeployed.container.url}
+<#include "/xldk8s/setup.ftl">
 kubectl delete namespace ${previousDeployed.namespaceName!previousDeployed.name}
