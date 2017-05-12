@@ -11,8 +11,6 @@ def modified_properties(delta):
 
 def is_scaling(delta):
     result = modified_properties(delta)
-    print result
-
     if len(result) == 1 and 'replicas' in result:
         scale_steps(delta, modified=result)
         return True
@@ -21,11 +19,10 @@ def is_scaling(delta):
 
 
 def scale_steps(delta, modified):
-    print "--- scale --"
     deployed = delta.deployed
     context.addStep(steps.os_script(
-        description="* Scale the '{0}' pod on {1}".format(deployed.name,
-                                                           deployed.container.name),
+        description="Scale the '{0}' pod on {1}".format(deployed.name,
+                                                        deployed.container.name),
         order=62,
         script='xldk8s/scale_deployment',
         target_host=deployed.container.host,
@@ -34,10 +31,9 @@ def scale_steps(delta, modified):
 
 
 def destroy_create_steps(deployed, previousDeployed):
-    print "--destroy-create--"
     context.addStep(steps.os_script(
-        description="* Destroy the '{0}' pod on {1}".format(previousDeployed.name,
-                                                            previousDeployed.container.name),
+        description="Destroy the '{0}' pod on {1}".format(previousDeployed.name,
+                                                          previousDeployed.container.name),
         order=41,
         script='ldk8s/destroy_deployment',
         target_host=deployed.container.host,
@@ -45,8 +41,8 @@ def destroy_create_steps(deployed, previousDeployed):
     ))
 
     context.addStep(steps.os_script(
-        description="* Create the '{0}' pod on {1}".format(deployed.name,
-                                                           deployed.container.name),
+        description="Create the '{0}' pod on {1}".format(deployed.name,
+                                                         deployed.container.name),
         order=62,
         script='xldk8s/create_deployment',
         target_host=deployed.container.host,
