@@ -61,7 +61,6 @@
         <conditions>
             <type>kubernetes.Pod</type>
             <operation>CREATE</operation>
-            <operation>MODIFY</operation>
         </conditions>
         <steps>
             <os-script>
@@ -78,7 +77,6 @@
         <conditions>
             <type>kubernetes.Pod</type>
             <operation>DESTROY</operation>
-            <operation>MODIFY</operation>
         </conditions>
         <steps>
             <os-script>
@@ -89,6 +87,14 @@
                 <script>xldk8s/destroy_deployment</script>
             </os-script>
         </steps>
+    </rule>
+
+    <rule name="kubernetes.pod.modify" scope="deployed">
+        <conditions>
+            <type>kubernetes.Pod</type>
+            <operation>MODIFY</operation>
+        </conditions>
+        <planning-script-path>xldk8s/planning/modify_pod.py</planning-script-path>
     </rule>
 
     <rule name="kubernetes.namespace.deploy" scope="deployed">
