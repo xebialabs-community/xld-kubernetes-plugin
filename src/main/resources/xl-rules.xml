@@ -39,7 +39,8 @@
         </steps>
     </rule>
 
-    <rule name="kubernetes.service.LoadBalancer" scope="deployed">
+
+    <rule name="kubernetes.service.wait.for.external.ip" scope="deployed">
         <conditions>
             <type>kubernetes.Service</type>
             <operation>CREATE</operation>
@@ -49,13 +50,28 @@
         <steps>
             <jython>
                 <order>90</order>
-                <description expression="true">"Wait for the external IP available for '{0}'
-                    service{0}".format(deployed.name)
-                </description>
+                <description expression="true">"Wait for the external IP available for '{0}' service {0}".format(deployed.name)</description>
                 <script>xldk8s/service_wait_for_external_ip.py</script>
             </jython>
         </steps>
     </rule>
+
+    <rule name="kubernetes.deployment.wait.for.replicas" scope="deployed">
+        <conditions>
+            <type>kubernetes.Pod</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <jython>
+                <order>90</order>
+                <description expression="true">"Wait for the '{0}' replicas available for '{1}' service".format(deployed.replicas,deployed.name)</description>
+                <script>xldk8s/deployment_wait_for_replicates.py</script>
+            </jython>
+        </steps>
+    </rule>
+
+
 
 
     <rule name="kubernetes.service.undeploy" scope="deployed">
