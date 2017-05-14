@@ -74,9 +74,7 @@
         <steps>
             <jython>
                 <order>90</order>
-                <description expression="true">"Wait for the '{0}' replicas available for '{1}'
-                    service".format(deployed.replicas,deployed.name)
-                </description>
+                <description expression="true">"Wait for the '{0}' replicas available for '{1}' service".format(deployed.replicas,deployed.name)</description>
                 <script>xldk8s/deployment_wait_for_replicates.py</script>
             </jython>
         </steps>
@@ -92,9 +90,7 @@
         <steps>
             <os-script>
                 <order>40</order>
-                <description expression="true">"Destroy the '{0}' service on {1}".format(previousDeployed.name,
-                    previousDeployed.container.name)
-                </description>
+                <description expression="true">"Destroy the '{0}' service on {1}".format(previousDeployed.name, previousDeployed.container.name)</description>
                 <script>xldk8s/destroy_service</script>
             </os-script>
         </steps>
