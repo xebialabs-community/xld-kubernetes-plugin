@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <!--
+
+    THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+    FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+
+-->
+<!--
     Note: If you modify this file and automatic reloading is disabled in `planner.conf`, you must restart the XL Deploy server.
 -->
 <rules xmlns="http://www.xebialabs.com/xl-deploy/xl-rules">
@@ -50,7 +57,9 @@
         <steps>
             <jython>
                 <order>90</order>
-                <description expression="true">"Wait for the external IP available for '{0}' service {0}".format(deployed.name)</description>
+                <description expression="true">"Wait for the external IP available for '{0}' service
+                    {0}".format(deployed.name)
+                </description>
                 <script>xldk8s/service_wait_for_external_ip.py</script>
             </jython>
         </steps>
@@ -65,13 +74,13 @@
         <steps>
             <jython>
                 <order>90</order>
-                <description expression="true">"Wait for the '{0}' replicas available for '{1}' service".format(deployed.replicas,deployed.name)</description>
+                <description expression="true">"Wait for the '{0}' replicas available for '{1}'
+                    service".format(deployed.replicas,deployed.name)
+                </description>
                 <script>xldk8s/deployment_wait_for_replicates.py</script>
             </jython>
         </steps>
     </rule>
-
-
 
 
     <rule name="kubernetes.service.undeploy" scope="deployed">

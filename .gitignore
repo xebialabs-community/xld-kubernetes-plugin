@@ -27,3 +27,11 @@ itest.properties
 !overthere-plugin/src/test/resources/itest.properties
 recovery/
 tasker/tasker-akka/work/
+build/
+.gradle/
+*.iml
+*.ipr
+*.iws
+out/
+.idea/
+classes/
