@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<!--
+    Note: If you modify this file and automatic reloading is disabled in `planner.conf`, you must restart the XL Deploy server.
+-->
+<rules xmlns="http://www.xebialabs.com/xl-deploy/xl-rules">
+
+    <rule name="kubernetes.resource.file.deploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.ExecutedResourceFile</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order expression="true">deployed.createOrder</order>
+                <description expression="true">"Execute the '{0}' resource file on {1}".format(deployed.name,
+                    deployed.container.name)
+                </description>
+                <script>xldk8s/execute_create</script>
+            </os-script>
+        </steps>
+    </rule>
+
+
+    <rule name="kubernetes.service.deploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.Service</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>61</order>
+                <description expression="true">"Create the '{0}' service on {1}".format(deployed.name,
+                    deployed.container.name)
+                </description>
+                <script>xldk8s/create_service</script>
+            </os-script>
+        </steps>
+    </rule>
+
+
+    <rule name="kubernetes.service.wait.for.external.ip" scope="deployed">
+        <conditions>
+            <type>kubernetes.Service</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+            <expression>deployed.serviceType == "LoadBalancer"</expression>
+        </conditions>
+        <steps>
+            <jython>
+                <order>90</order>
+                <description expression="true">"Wait for the external IP available for '{0}' service {0}".format(deployed.name)</description>
+                <script>xldk8s/service_wait_for_external_ip.py</script>
+            </jython>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.deployment.wait.for.replicas" scope="deployed">
+        <conditions>
+            <type>kubernetes.Pod</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <jython>
+                <order>90</order>
+                <description expression="true">"Wait for the '{0}' replicas available for '{1}' service".format(deployed.replicas,deployed.name)</description>
+                <script>xldk8s/deployment_wait_for_replicates.py</script>
+            </jython>
+        </steps>
+    </rule>
+
+
+
+
+    <rule name="kubernetes.service.undeploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.Service</type>
+            <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>40</order>
+                <description expression="true">"Destroy the '{0}' service on {1}".format(previousDeployed.name,
+                    previousDeployed.container.name)
+                </description>
+                <script>xldk8s/destroy_service</script>
+            </os-script>
+        </steps>
+    </rule>
+
+
+    <rule name="kubernetes.pod.deploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.Pod</type>
+            <operation>CREATE</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>62</order>
+                <description expression="true">"Create the '{0}' pod on {1}".format(deployed.name,
+                    deployed.container.name)
+                </description>
+                <script>xldk8s/create_deployment</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.pod.undeploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.Pod</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>41</order>
+                <description expression="true">"Destroy the '{0}' pod on {1}".format(previousDeployed.name,
+                    previousDeployed.container.name)
+                </description>
+                <script>xldk8s/destroy_deployment</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.pod.modify" scope="deployed">
+        <conditions>
+            <type>kubernetes.Pod</type>
+            <operation>MODIFY</operation>
+        </conditions>
+        <planning-script-path>xldk8s/planning/modify_pod.py</planning-script-path>
+    </rule>
+
+    <rule name="kubernetes.namespace.deploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.Namespace</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>60</order>
+                <description expression="true">"Create the '{0}' namespace on {1}".format(deployed.name,
+                    deployed.container.name)
+                </description>
+                <script>xldk8s/create_namespace</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.namespace.undeploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.Namespace</type>
+            <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>49</order>
+                <description expression="true">"Destroy the '{0}' namespace on {1}".format(previousDeployed.name,
+                    previousDeployed.container.name)
+                </description>
+                <script>xldk8s/destroy_namespace</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.configmap.deploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.ConfigMapFolder</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>61</order>
+                <description expression="true">"Create the '{0}' config map on {1}".format(deployed.name,
+                    deployed.container.name)
+                </description>
+                <script>xldk8s/create_config_map</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.configmap.undeploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.ConfigMapFolder</type>
+            <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>42</order>
+                <description expression="true">"Destroy the '{0}' config map on {1}".format(previousDeployed.name,
+                    previousDeployed.container.name)
+                </description>
+                <script>xldk8s/destroy_config_map</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.stop.start.pods.on.modified.config.map" scope="plan">
+        <planning-script-path>xldk8s/planning/start_stop_pod_on_modified_config_map.py</planning-script-path>
+    </rule>
+
+
+</rules>
