@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<udm.DeploymentPackage version="1.2" application="Guestbook">
+    <deployables>
+        <kubernetes.ServiceSpec name="/redis-slave">
+            <selector>
+                <entry key="role">slave</entry>
+                <entry key="app">redis</entry>
+                <entry key="tier">backend</entry>
+            </selector>
+            <namespace>guestbook</namespace>
+            <labels>
+                <entry key="role">slave</entry>
+                <entry key="app">redis</entry>
+                <entry key="tier">backend</entry>
+            </labels>
+            <annotations/>
+            <url>https://github.com/kubernetes/kubernetes/blob/master/examples/guestbook/redis-slave-service.yaml</url>
+            <ports>
+                <kubernetes.ServicePortSpec name="/redis-slave/redis-port">
+                    <targetPort>6379</targetPort>
+                    <port>6379</port>
+                </kubernetes.ServicePortSpec>
+            </ports>
+        </kubernetes.ServiceSpec>
+        <kubernetes.ServiceSpec name="/frontend">
+            <tags/>
+            <selector>
+                <entry key="app">guestbook</entry>
+                <entry key="tier">frontend</entry>
+            </selector>
+            <serviceType>LoadBalancer</serviceType>
+            <namespace>guestbook</namespace>
+            <labels>
+                <entry key="app">guestbook</entry>
+                <entry key="tier">frontend</entry>
+            </labels>
+            <annotations/>
+            <url>https://github.com/kubernetes/kubernetes/blob/master/examples/guestbook/frontend-service.yaml</url>
+            <ports>
+                <kubernetes.ServicePortSpec name="/frontend/80">
+                    <port>80</port>
+                </kubernetes.ServicePortSpec>
+            </ports>
+        </kubernetes.ServiceSpec>
+        <kubernetes.ServiceSpec name="/redis-master">
+
+            <selector>
+                <entry key="role">master</entry>
+                <entry key="app">redis</entry>
+                <entry key="tier">backend</entry>
+            </selector>
+            <namespace>guestbook</namespace>
+            <labels>
+                <entry key="role">master</entry>
+                <entry key="app">redis</entry>
+                <entry key="tier">backend</entry>
+            </labels>
+            <annotations/>
+            <url>https://github.com/kubernetes/kubernetes/blob/master/examples/guestbook/redis-master-service.yaml</url>
+            <ports>
+                <kubernetes.ServicePortSpec name="/redis-master/redis-port">
+                    <targetPort>6379</targetPort>
+                    <port>6379</port>
+                </kubernetes.ServicePortSpec>
+            </ports>
+        </kubernetes.ServiceSpec>
+        <kubernetes.PodSpec name="/frontend-pod">
+            <tags/>
+            <selectorMatchLabels/>
+            <url>https://github.com/kubernetes/kubernetes/blob/master/examples/guestbook/frontend-deployment.yaml</url>
+            <labels>
+                <entry key="app">guestbook</entry>
+                <entry key="tier">frontend</entry>
+            </labels>
+            <namespace>guestbook</namespace>
+            <annotations/>
+            <containers>
+                <kubernetes.ContainerSpec name="/frontend-pod/php-redis">
+                    <image>gcr.io/google-samples/gb-frontend:v4</image>
+                    <command/>
+                    <args/>
+                    <env>
+                        <entry key="GET_HOSTS_FROM">env</entry>
+                    </env>
+                    <requests>
+                        <entry key="cpu">100m</entry>
+                        <entry key="memory">100Mi</entry>
+                    </requests>
+                    <limits/>
+                    <ports>
+                        <kubernetes.ContainerPortSpec name="/frontend-pod/php-redis/web">
+                            <containerPort>80</containerPort>
+                        </kubernetes.ContainerPortSpec>
+                    </ports>
+                    <volumeMounts>
+                        <kubernetes.ContainerVolumeSpec name="/frontend-pod/php-redis/tmp-volume">
+                            <mountPath>/tmp</mountPath>
+                        </kubernetes.ContainerVolumeSpec>
+                    </volumeMounts>
+                    <securityContext/>
+                    <probes/>
+                </kubernetes.ContainerSpec>
+            </containers>
+            <volumes>
+                <kubernetes.VolumeSpec name="/frontend-pod/tmp-volume">
+                    <emptyDirMedium>Memory</emptyDirMedium>
+                </kubernetes.VolumeSpec>
+            </volumes>
+        </kubernetes.PodSpec>
+
+        <kubernetes.NamespaceSpec name="/guestbook"/>
+
+        <kubernetes.PodSpec name="/redis-master-pod">
+            <tags/>
+            <selectorMatchLabels/>
+            <url>https://github.com/kubernetes/kubernetes/blob/master/examples/guestbook/redis-master-deployment.yaml
+            </url>
+            <labels>
+                <entry key="role">master</entry>
+                <entry key="app">redis</entry>
+                <entry key="tier">backend</entry>
+            </labels>
+            <namespace>guestbook</namespace>
+
+            <containers>
+                <kubernetes.ContainerSpec name="/redis-master-pod/master">
+                    <image>gcr.io/google_containers/redis:e2e</image>
+                    <command/>
+                    <args/>
+                    <env/>
+                    <requests>
+                        <entry key="cpu">100m</entry>
+                        <entry key="memory">100Mi</entry>
+                    </requests>
+                    <limits/>
+                    <ports>
+                        <kubernetes.ContainerPortSpec name="/redis-master-pod/master/6379">
+                            <containerPort>6379</containerPort>
+                        </kubernetes.ContainerPortSpec>
+                    </ports>
+                    <volumeMounts/>
+                    <securityContext/>
+                    <probes/>
+                </kubernetes.ContainerSpec>
+            </containers>
+            <volumes/>
+        </kubernetes.PodSpec>
+        <kubernetes.PodSpec name="/redis-slave-pod">
+            <selectorMatchLabels/>
+            <replicas>2</replicas>
+            <url>https://github.com/kubernetes/kubernetes/blob/master/examples/guestbook/redis-slave-deployment.yaml
+            </url>
+            <labels>
+                <entry key="role">slave</entry>
+                <entry key="app">redis</entry>
+                <entry key="tier">backend</entry>
+            </labels>
+            <namespace>guestbook</namespace>
+            <annotations/>
+            <containers>
+                <kubernetes.ContainerSpec name="/redis-slave-pod/slave">
+                    <image>gcr.io/google_samples/gb-redisslave:v1</image>
+                    <command/>
+                    <args/>
+                    <env>
+                        <entry key="GET_HOSTS_FROM">env</entry>
+                    </env>
+                    <requests>
+                        <entry key="cpu">100m</entry>
+                        <entry key="memory">100Mi</entry>
+                    </requests>
+                    <limits/>
+                    <ports>
+                        <kubernetes.ContainerPortSpec name="/redis-slave-pod/slave/6379">
+                            <containerPort>6379</containerPort>
+                        </kubernetes.ContainerPortSpec>
+                    </ports>
+                    <volumeMounts/>
+                    <securityContext/>
+                    <probes/>
+                </kubernetes.ContainerSpec>
+            </containers>
+            <volumes/>
+        </kubernetes.PodSpec>
+    </deployables>
+    <applicationDependencies/>
+    <dependencyResolution>LATEST</dependencyResolution>
+    <undeployDependencies>false</undeployDependencies>
+</udm.DeploymentPackage>
