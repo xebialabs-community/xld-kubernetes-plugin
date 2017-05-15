@@ -1,9 +1,9 @@
 plugins {
-    id "com.github.hierynomus.license" version "0.12.1"
+    id "com.github.hierynomus.license" version "0.13.0"
     id "com.xebialabs.xldp" version "1.0.5"
 }
 
-version = '6.2.1-SNAPSHOT'
+version = '6.0.0'
 
 
 def apiVersion = '2016.2.2'
@@ -23,20 +23,18 @@ repositories {
     }
 }
 
-processResources.configure {
-    filter ReplaceTokens, tokens: [
-            'project.version': version.toString(),
-            'project.name'   : rootProject.name
-    ]
+processResources {
+    filesMatching('**/plugin-version.properties') {
+        expand(
+                'project_version': version.toString(),
+                'project_name': rootProject.name
+        )
+    }
 }
 
-dependencies {
-    compile 'com.xebialabs.overthere:overtherepy:0.0.3'
 
-    distBundle('com.xebialabs.overthere:overtherepy:0.0.3') {
-        exclude module: 'jython'
-        exclude module: 'overthere'
-    }
+dependencies {
+    compile "com.xebialabs.deployit:udm-plugin-api:$apiVersion"
 }
 
 license {
