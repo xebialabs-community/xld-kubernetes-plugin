@@ -15,12 +15,14 @@ try:
     response = session.execute(command_line)
     data = json.loads(" ".join(response.stdout))
 
-    availableReplicas = int(data['status']['availableReplicas'])
-    print "availableReplicas {0}/{1}".format(availableReplicas, deployed.replicas)
+    availableReplicas = int(data['status']['replicas'])
+    print "replicas {0}/{1}".format(availableReplicas, deployed.replicas)
     if availableReplicas == deployed.replicas:
         print "DONE"
     else:
         print "WAIT"
         result = "RETRY"
+except:
+    result = "RETRY"
 finally:
     session.close_conn()

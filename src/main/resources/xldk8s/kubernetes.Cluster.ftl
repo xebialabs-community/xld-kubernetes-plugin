@@ -6,5 +6,8 @@
 
 -->
 
-<#include "/xldk8s/${(deployed.container.type)!(previousDeployed.container.type)}.ftl">
+
+export KUBERNETES_MASTER=${(deployed.container.url)!(previousDeployed.container.url)}
+
+
 

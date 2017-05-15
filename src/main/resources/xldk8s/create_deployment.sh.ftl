@@ -108,7 +108,7 @@ spec:
 </#list>
 " > deployment.yaml
 
-cp ./deployment.yaml  /tmp/x.yaml
+
 
 cat deployment.yaml
 <#include "/xldk8s/setup.ftl">
