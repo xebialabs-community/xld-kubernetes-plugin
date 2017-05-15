@@ -32,3 +32,4 @@ Place the plugin XLDP file into your `SERVER_HOME/plugins` directory.
 * [PetDocker](https://github.com/bmoussaud/xld-petclinic-docker) The famous petportal application packaged using Docker Containers.
 
 
+![kubernetes Logo](https://kubernetes.io/images/favicon.png)
