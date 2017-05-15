@@ -7,6 +7,14 @@
 import json
 from overtherepy import OverthereHostSession
 
+def get_available_replicas(data):
+    try:
+        return int(data['status']['availableReplicas'])
+    except:
+        return -1
+
+
+
 deployment_name = deployed.podName or deployed.name
 command_line = "kubectl get deployment {0} --namespace=guestbook -o=json".format(deployment_name)
 print command_line
@@ -15,14 +23,16 @@ try:
     response = session.execute(command_line)
     data = json.loads(" ".join(response.stdout))
 
-    availableReplicas = int(data['status']['replicas'])
-    print "replicas {0}/{1}".format(availableReplicas, deployed.replicas)
+    condition = data['status']['conditions'][0]
+    print "Status {status} {reason}: {message}".format(**condition)
+    availableReplicas = get_available_replicas(data)
+    print "availableReplicas {0}/{1}".format(availableReplicas, deployed.replicas)
+
     if availableReplicas == deployed.replicas:
         print "DONE"
     else:
         print "WAIT"
         result = "RETRY"
-except:
-    result = "RETRY"
+
 finally:
     session.close_conn()
