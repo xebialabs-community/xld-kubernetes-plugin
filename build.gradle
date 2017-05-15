@@ -23,6 +23,13 @@ repositories {
     }
 }
 
+processResources.configure {
+    filter ReplaceTokens, tokens: [
+            'project.version': version.toString(),
+            'project.name'   : rootProject.name
+    ]
+}
+
 dependencies {
     compile 'com.xebialabs.overthere:overtherepy:0.0.3'
 
