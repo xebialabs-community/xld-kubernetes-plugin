@@ -1,5 +1,7 @@
 # xld-kubernetes-plugin
 
+<img src="https://kubernetes.io/images/favicon.png" width="200" height="200"/>
+
 # Overview #
 
 This plugin is a XL Deploy plugin that adds capability for deploying on a [Kubernetes Cluster](https://kubernetes.io/).
@@ -32,4 +34,5 @@ Place the plugin XLDP file into your `SERVER_HOME/plugins` directory.
 * [PetDocker](https://github.com/bmoussaud/xld-petclinic-docker) The famous petportal application packaged using Docker Containers.
 
 
-![kubernetes Logo](https://kubernetes.io/images/favicon.png)
+
+
