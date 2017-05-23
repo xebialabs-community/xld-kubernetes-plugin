@@ -20,8 +20,7 @@
         <steps>
             <os-script>
                 <order expression="true">deployed.createOrder</order>
-                <description expression="true">"Execute the '{0}' resource file on {1}".format(deployed.name,
-                    deployed.container.name)
+                <description expression="true">"Execute the '{0}' resource file on {1}".format(deployed.name, deployed.container.name)
                 </description>
                 <script>xldk8s/execute_create</script>
             </os-script>
@@ -38,8 +37,7 @@
         <steps>
             <os-script>
                 <order>61</order>
-                <description expression="true">"Create the '{0}' service on {1}".format(deployed.name,
-                    deployed.container.name)
+                <description expression="true">"Create the '{0}' service on {1}".format(deployed.name, deployed.container.name)
                 </description>
                 <script>xldk8s/create_service</script>
             </os-script>
@@ -104,8 +102,7 @@
         <steps>
             <os-script>
                 <order>62</order>
-                <description expression="true">"Create the '{0}' pod on {1}".format(deployed.name,
-                    deployed.container.name)
+                <description expression="true">"Create the '{0}' pod on {1}".format(deployed.name,deployed.container.name)
                 </description>
                 <script>xldk8s/create_deployment</script>
             </os-script>
@@ -120,8 +117,7 @@
         <steps>
             <os-script>
                 <order>41</order>
-                <description expression="true">"Destroy the '{0}' pod on {1}".format(previousDeployed.name,
-                    previousDeployed.container.name)
+                <description expression="true">"Destroy the '{0}' pod on {1}".format(previousDeployed.name, previousDeployed.container.name)
                 </description>
                 <script>xldk8s/destroy_deployment</script>
             </os-script>
@@ -145,8 +141,7 @@
         <steps>
             <os-script>
                 <order>60</order>
-                <description expression="true">"Create the '{0}' namespace on {1}".format(deployed.name,
-                    deployed.container.name)
+                <description expression="true">"Create the '{0}' namespace on {1}".format(deployed.name, deployed.container.name)
                 </description>
                 <script>xldk8s/create_namespace</script>
             </os-script>
@@ -162,8 +157,7 @@
         <steps>
             <os-script>
                 <order>49</order>
-                <description expression="true">"Destroy the '{0}' namespace on {1}".format(previousDeployed.name,
-                    previousDeployed.container.name)
+                <description expression="true">"Destroy the '{0}' namespace on {1}".format(previousDeployed.name, previousDeployed.container.name)
                 </description>
                 <script>xldk8s/destroy_namespace</script>
             </os-script>
@@ -179,8 +173,7 @@
         <steps>
             <os-script>
                 <order>61</order>
-                <description expression="true">"Create the '{0}' config map on {1}".format(deployed.name,
-                    deployed.container.name)
+                <description expression="true">"Create the '{0}' config map on {1}".format(deployed.name, deployed.container.name)
                 </description>
                 <script>xldk8s/create_config_map</script>
             </os-script>
@@ -196,8 +189,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Destroy the '{0}' config map on {1}".format(previousDeployed.name,
-                    previousDeployed.container.name)
+                <description expression="true">"Destroy the '{0}' config map on {1}".format(previousDeployed.name, previousDeployed.container.name)
                 </description>
                 <script>xldk8s/destroy_config_map</script>
             </os-script>
