@@ -41,7 +41,7 @@ def destroy_create_steps(deployed, previousDeployed):
         description="Destroy the '{0}' pod on {1}".format(previousDeployed.name,
                                                           previousDeployed.container.name),
         order=41,
-        script='ldk8s/destroy_deployment',
+        script='xldk8s/destroy_deployment',
         target_host=deployed.container.host,
         freemarker_context={'previousDeployed': deployed}
     ))
