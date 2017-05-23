@@ -3,7 +3,7 @@ plugins {
     id "com.xebialabs.xldp" version "1.0.5"
 }
 
-version = '6.2.2-SNAPSHOT'
+version = '6.2.3'
 
 def apiVersion = '2016.2.2'
 
