@@ -39,6 +39,7 @@
                 <description expression="true">"Create the '{0}' service on {1}".format(deployed.name,deployed.container.name)</description>
                 <script>xldk8s/create_service</script>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -87,6 +88,7 @@
                 <description expression="true">"Create the '{0}' pod on {1}".format(deployed.name,deployed.container.name)</description>
                 <script>xldk8s/create_deployment</script>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -248,6 +250,7 @@
                     <podname expression="true">deployed.name</podname>
                 </jython-context>
             </jython>
+
         </steps>
     </rule>
 
