@@ -6,4 +6,4 @@
 
 -->
 <#include "/xldk8s/setup.ftl">
-kubectl create --filename=${deployed.file.path}
+kubectl create --filename=${deployed.file.path} --validate=${previousDeployed.container.validate}

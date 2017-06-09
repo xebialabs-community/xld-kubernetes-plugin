@@ -15,6 +15,7 @@
     <type type="kubernetes.Cluster" extends="udm.BaseContainer" description="Kubernetes cluster" root="INFRASTRUCTURE">
         <property name="host" required="false" kind="ci" referenced-type="overthere.Host"/>
         <property name="url" required="true"/>
+        <property name="validate" required="false" category="Advanced" default="true" kind="boolean"/>
     </type>
 
     <type type="kubernetes.Container" deployable-type="kubernetes.ContainerSpec" container-type="kubernetes.Pod"

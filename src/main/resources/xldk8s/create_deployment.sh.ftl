@@ -112,4 +112,4 @@ spec:
 
 cat deployment.yaml
 <#include "/xldk8s/setup.ftl">
-kubectl apply -f deployment.yaml
+kubectl apply -f deployment.yaml --validate=${deployed.container.validate?c}

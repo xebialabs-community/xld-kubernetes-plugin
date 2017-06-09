@@ -32,15 +32,14 @@ try:
     external_ip = data['status']['loadBalancer']['ingress'][0]['ip']
     print "EXTERNAL-IP {0}".format(external_ip)
 except:
-    print "EXTERNAL-IP <pending>"
     inc_context()
-    print get_value_context()
-    if get_value_context() < int(attempts):
+    cpt = get_value_context()
+    print "EXTERNAL-IP <pending>....{0}/{1}".format(cpt, attempts)
+    if cpt < int(attempts):
         result = "RETRY"
     else:
         print "Too many attempts {0}".format(attempts)
-
-        result = get_value_context()
+        result = int(attempts)
 
 finally:
     session.close_conn()

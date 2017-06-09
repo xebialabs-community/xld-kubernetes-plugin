@@ -5,6 +5,7 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-
+echo "configure access to /${(deployed.container.type)!(previousDeployed.container.type)}.ftl"
 <#include "/xldk8s/${(deployed.container.type)!(previousDeployed.container.type)}.ftl">
+
 
