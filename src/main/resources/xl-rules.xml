@@ -52,7 +52,7 @@
         </conditions>
         <steps>
             <jython>
-                <order>90</order>
+                <order>91</order>
                 <description expression="true">"Wait for the external IP available for '{0}' service {0}".format(deployed.name)</description>
                 <script>xldk8s/service_wait_for_external_ip.py</script>
             </jython>
