@@ -7,6 +7,21 @@
 import json
 from overtherepy import OverthereHostSession
 
+def inc_context():
+    key= "wait_{0}".format(service_name)
+    if context.getAttribute(key) is None:
+        context.setAttribute(key,int(0))
+    value = context.getAttribute(key)
+    value =  value + 1
+    context.setAttribute(key,value)
+
+def get_value_context():
+    key= "wait_{0}".format(service_name)
+    return context.getAttribute(key)
+
+
+
+
 service_name = deployed.serviceName or deployed.name
 command_line = "kubectl get service {0} --namespace=guestbook -o=json".format(service_name)
 print command_line
@@ -18,6 +33,14 @@ try:
     print "EXTERNAL-IP {0}".format(external_ip)
 except:
     print "EXTERNAL-IP <pending>"
-    result = "RETRY"
+    inc_context()
+    print get_value_context()
+    if get_value_context() < int(attempts):
+        result = "RETRY"
+    else:
+        print "Too many attempts {0}".format(attempts)
+
+        result = get_value_context()
+
 finally:
     session.close_conn()
