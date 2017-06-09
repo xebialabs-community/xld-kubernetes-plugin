@@ -20,9 +20,7 @@
         <steps>
             <os-script>
                 <order expression="true">deployed.createOrder</order>
-                <description expression="true">"Execute the '{0}' resource file on {1}".format(deployed.name,
-                    deployed.container.name)
-                </description>
+                <description expression="true">"Execute the '{0}' resource file on {1}".format(deployed.name, deployed.container.name)</description>
                 <script>xldk8s/execute_create</script>
             </os-script>
         </steps>
@@ -38,9 +36,7 @@
         <steps>
             <os-script>
                 <order>61</order>
-                <description expression="true">"Create the '{0}' service on {1}".format(deployed.name,
-                    deployed.container.name)
-                </description>
+                <description expression="true">"Create the '{0}' service on {1}".format(deployed.name, deployed.container.name)</description>
                 <script>xldk8s/create_service</script>
             </os-script>
         </steps>
@@ -57,27 +53,9 @@
         <steps>
             <jython>
                 <order>90</order>
-                <description expression="true">"Wait for the external IP available for '{0}' service
-                    {0}".format(deployed.name)
+                <description expression="true">"Wait for the external IP available for '{0}' service {0}".format(deployed.name)
                 </description>
                 <script>xldk8s/service_wait_for_external_ip.py</script>
-            </jython>
-        </steps>
-    </rule>
-
-    <rule name="kubernetes.deployment.wait.for.replicas" scope="deployed">
-        <conditions>
-            <type>kubernetes.Pod</type>
-            <operation>CREATE</operation>
-            <operation>MODIFY</operation>
-        </conditions>
-        <steps>
-            <jython>
-                <order>90</order>
-                <description expression="true">"Wait for the '{0}' replicas available for '{1}'
-                    service".format(deployed.replicas,deployed.name)
-                </description>
-                <script>xldk8s/deployment_wait_for_replicates.py</script>
             </jython>
         </steps>
     </rule>
@@ -92,8 +70,7 @@
         <steps>
             <os-script>
                 <order>40</order>
-                <description expression="true">"Destroy the '{0}' service on {1}".format(previousDeployed.name,
-                    previousDeployed.container.name)
+                <description expression="true">"Destroy the '{0}' service on {1}".format(previousDeployed.name, previousDeployed.container.name)
                 </description>
                 <script>xldk8s/destroy_service</script>
             </os-script>
@@ -125,8 +102,7 @@
         <steps>
             <os-script>
                 <order>41</order>
-                <description expression="true">"Destroy the '{0}' pod on {1}".format(previousDeployed.name,
-                    previousDeployed.container.name)
+                <description expression="true">"Destroy the '{0}' pod on {1}".format(previousDeployed.name, previousDeployed.container.name)
                 </description>
                 <script>xldk8s/destroy_deployment</script>
             </os-script>
@@ -150,8 +126,7 @@
         <steps>
             <os-script>
                 <order>60</order>
-                <description expression="true">"Create the '{0}' namespace on {1}".format(deployed.name,
-                    deployed.container.name)
+                <description expression="true">"Create the '{0}' namespace on {1}".format(deployed.name, deployed.container.name)
                 </description>
                 <script>xldk8s/create_namespace</script>
             </os-script>
@@ -184,8 +159,7 @@
         <steps>
             <os-script>
                 <order>61</order>
-                <description expression="true">"Create the '{0}' config map on {1}".format(deployed.name,
-                    deployed.container.name)
+                <description expression="true">"Create the '{0}' config map on {1}".format(deployed.name, deployed.container.name)
                 </description>
                 <script>xldk8s/create_config_map</script>
             </os-script>
@@ -201,8 +175,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Destroy the '{0}' config map on {1}".format(previousDeployed.name,
-                    previousDeployed.container.name)
+                <description expression="true">"Destroy the '{0}' config map on {1}".format(previousDeployed.name, previousDeployed.container.name)
                 </description>
                 <script>xldk8s/destroy_config_map</script>
             </os-script>
@@ -223,8 +196,7 @@
         <steps>
             <os-script>
                 <order>62</order>
-                <description expression="true">"Create the '{0}' smart pod on {1}".format(deployed.name,deployed.container.name)
-                </description>
+                <description expression="true">"Create the '{0}' smart pod on {1}".format(deployed.name,deployed.container.name)</description>
                 <script>xldk8s/create_smart_deployment</script>
                 <freemarker-context>
                     <deployedApplication expression="true">deployedApplication</deployedApplication>
@@ -249,6 +221,42 @@
                     <deployedApplication expression="true">deployedApplication</deployedApplication>
                 </freemarker-context>
             </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.smart.pod.wait.for.replicas" scope="deployed">
+        <conditions>
+            <type>kubernetes.SmartPod</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <jython>
+                <order>90</order>
+                <description expression="true">"Wait for the '{0}' replicas available for '{1}' smart pod".format(deployed.replicas,deployed.name)</description>
+                <script>xldk8s/deployment_wait_for_replicates.py</script>
+                <jython-context>
+                    <podname expression="true">deployed.name</podname>
+                </jython-context>
+            </jython>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.deployment.wait.for.replicas" scope="deployed">
+        <conditions>
+            <type>kubernetes.Pod</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <jython>
+                <order>90</order>
+                <description expression="true">"Wait for the '{0}' replicas available for '{1}' pod".format(deployed.replicas,deployed.name)</description>
+                <script>xldk8s/deployment_wait_for_replicates.py</script>
+                <jython-context>
+                    <podname expression="true">deployed.name</podname>
+                </jython-context>
+            </jython>
         </steps>
     </rule>
 

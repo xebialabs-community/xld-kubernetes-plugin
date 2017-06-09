@@ -15,7 +15,7 @@ def get_available_replicas(data):
 
 
 
-deployment_name = deployed.podName or deployed.name
+deployment_name = podname
 command_line = "kubectl get deployment {0} --namespace={1} -o=json".format(deployment_name, deployed.namespace)
 print command_line
 try:
