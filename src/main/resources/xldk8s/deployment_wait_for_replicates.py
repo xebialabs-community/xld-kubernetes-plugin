@@ -7,6 +7,21 @@
 import json
 from overtherepy import OverthereHostSession
 
+
+def inc_context():
+    key = "wait_replicates_{0}".format(podname)
+    if context.getAttribute(key) is None:
+        context.setAttribute(key, int(0))
+    value = context.getAttribute(key)
+    value = value + 1
+    context.setAttribute(key, value)
+
+
+def get_value_context():
+    key = "wait_replicates_{0}".format(podname)
+    return context.getAttribute(key)
+
+
 def get_available_replicas(data):
     try:
         return int(data['status']['availableReplicas'])
@@ -14,7 +29,7 @@ def get_available_replicas(data):
         return -1
 
 
-
+attempts = 10
 deployment_name = podname
 command_line = "kubectl get deployment {0} --namespace={1} -o=json".format(deployment_name, deployed.namespace)
 print command_line
@@ -28,11 +43,19 @@ try:
     availableReplicas = get_available_replicas(data)
     print "availableReplicas {0}/{1}".format(availableReplicas, deployed.replicas)
 
-    if availableReplicas == deployed.replicas:
-        print "DONE"
+    if condition['status'] == "True":
+        print "Status Ok"
+    elif availableReplicas == deployed.replicas:
+        print "DONE replicas"
     else:
-        print "WAIT"
-        result = "RETRY"
+        inc_context()
+        cpt = get_value_context()
+        print "WAIT....{0}/{1}".format(cpt, attempts)
+        if cpt < int(attempts):
+            result = "RETRY"
+        else:
+            print "Too many attempts {0}".format(attempts)
+            result = int(attempts)
 
 finally:
     session.close_conn()

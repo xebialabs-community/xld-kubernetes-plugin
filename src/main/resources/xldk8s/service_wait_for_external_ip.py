@@ -21,9 +21,8 @@ def get_value_context():
 
 
 
-
 service_name = deployed.serviceName or deployed.name
-command_line = "kubectl get service {0} --namespace=guestbook -o=json".format(service_name)
+command_line = "kubectl get service {0} --namespace={1} -o=json".format(service_name, deployed.namespace)
 print command_line
 session = OverthereHostSession(deployed.container.host)
 response = session.execute(command_line)
@@ -39,7 +38,7 @@ except:
         result = "RETRY"
     else:
         print "Too many attempts {0}".format(attempts)
-        result = int(attempts)
+        result = int(cpt)
 
 finally:
     session.close_conn()

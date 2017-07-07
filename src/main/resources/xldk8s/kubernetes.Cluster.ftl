@@ -6,7 +6,7 @@
 
 -->
 
-
+echo "export KUBERNETES_MASTER=${(deployed.container.url)!(previousDeployed.container.url)}"
 export KUBERNETES_MASTER=${(deployed.container.url)!(previousDeployed.container.url)}
 
 
