@@ -55,4 +55,5 @@ spec:
 cat deployment.yaml
 
 <#include "/xldk8s/setup.ftl">
-kubectl apply -f deployment.yaml --validate=${deployed.container.validate?c}
+${kubectl} apply -f deployment.yaml --validate=${deployed.container.validate?c}
+<#include "/xldk8s/teardown.ftl">

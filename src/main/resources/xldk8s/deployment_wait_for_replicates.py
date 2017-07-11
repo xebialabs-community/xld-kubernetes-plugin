@@ -31,7 +31,11 @@ def get_available_replicas(data):
 
 attempts = 10
 deployment_name = podname
-command_line = "kubectl get deployment {0} --namespace={1} -o=json".format(deployment_name, deployed.namespace)
+if deployed.namespace is not None:
+    command_line = "{2} get deployment {0} --namespace={1} -o=json".format(deployment_name, deployed.namespace, deployed.container.command)
+else:
+    command_line = "{2} get deployment {0} -o=json".format(deployment_name, deployed.namespace, deployed.container.command)
+
 print command_line
 try:
     session = OverthereHostSession(deployed.container.host)

@@ -5,9 +5,12 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-<#assign container=(deployed.container)!(previousDeployed.container) />
-<#assign kubectl=(container.command)/>
-echo "configure access to /${(deployed.container.type)!(previousDeployed.container.type)}.ftl"
-<#include "/xldk8s/${(deployed.container.type)!(previousDeployed.container.type)}.ftl">
+K8S_EXIT_CODE=$?
+echo "close access to /teardown.${(deployed.container.type)!(previousDeployed.container.type)}.ftl"
+<#include "/xldk8s/teardown.${(deployed.container.type)!(previousDeployed.container.type)}.ftl">
+
+exit $K8S_EXIT_CODE
+
+
 
 

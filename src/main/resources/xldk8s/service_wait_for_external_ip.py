@@ -22,7 +22,7 @@ def get_value_context():
 
 
 service_name = deployed.serviceName or deployed.name
-command_line = "kubectl get service {0} --namespace={1} -o=json".format(service_name, deployed.namespace)
+command_line = "${2) get service {0} --namespace={1} -o=json".format(service_name, deployed.namespace, deployed.container.command)
 print command_line
 session = OverthereHostSession(deployed.container.host)
 response = session.execute(command_line)

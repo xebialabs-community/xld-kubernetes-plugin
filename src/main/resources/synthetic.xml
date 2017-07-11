@@ -16,6 +16,7 @@
         <property name="host" required="false" kind="ci" referenced-type="overthere.Host"/>
         <property name="url" required="true"/>
         <property name="validate" required="false" category="Advanced" default="true" kind="boolean"/>
+        <property name="command" required="false" category="Advanced" default="kubectl" />
     </type>
 
     <type type="kubernetes.Container" deployable-type="kubernetes.ContainerSpec" container-type="kubernetes.Pod"

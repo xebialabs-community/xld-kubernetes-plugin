@@ -17,4 +17,5 @@ cat namespace.yaml
 cp namespace.yaml /tmp/namespace.yaml
 
 <#include "/xldk8s/setup.ftl">
-kubectl apply -f namespace.yaml --validate=${deployed.container.validate?c}
+${kubectl} apply -f namespace.yaml --validate=${deployed.container.validate?c}
+<#include "/xldk8s/teardown.ftl">
