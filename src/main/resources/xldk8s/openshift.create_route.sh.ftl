@@ -7,5 +7,10 @@
 -->
 <#include "/xldk8s/setup.ftl">
 ${kubectl} create route edge --service=${deployed.name}
+
+echo "---------------"
+${kubectl} get routes ${deployed.name}
+echo "---------------"
+
 <#include "/xldk8s/teardown.ftl">
 
