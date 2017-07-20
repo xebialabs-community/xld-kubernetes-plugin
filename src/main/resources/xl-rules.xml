@@ -257,5 +257,35 @@
         </steps>
     </rule>
 
+    <rule name="openshift.kubernetes.expose.service.as.route" scope="deployed">
+        <conditions>
+            <type>kubernetes.Service</type>
+            <operation>CREATE</operation>
+            <expression>deployed.container.type == "openshift.kubernetes.Cluster"</expression>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>63</order>
+                <description expression="true">"Create a route for service {0}".format(deployed.name)</description>
+                <script>xldk8s/openshift.create_route</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="openshift.kubernetes.stop.service.as.route" scope="deployed">
+        <conditions>
+            <type>kubernetes.Service</type>
+            <operation>DESTROY</operation>
+            <expression>previousDeployed.container.type == "openshift.kubernetes.Cluster"</expression>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>43</order>
+                <description expression="true">"Delete a route for service {0}".format(previousDeployed.name)</description>
+                <script>xldk8s/openshift.destroy_route</script>
+            </os-script>
+        </steps>
+    </rule>
+
 
 </rules>

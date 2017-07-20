@@ -16,7 +16,7 @@
         <property name="host" required="false" kind="ci" referenced-type="overthere.Host"/>
         <property name="url" required="true"/>
         <property name="validate" required="false" category="Advanced" default="true" kind="boolean"/>
-        <property name="command" required="false" category="Advanced" default="kubectl" />
+        <property name="command" required="false" category="Advanced" default="kubectl"/>
     </type>
 
     <type type="kubernetes.Container" deployable-type="kubernetes.ContainerSpec" container-type="kubernetes.Pod"
@@ -261,6 +261,12 @@
         <property category="Process" name="env" required="false" kind="map_string_string"
                   description="List of environment variables to set in the container. Cannot be updated."/>
         <property category="Network" name="containerPorts" kind="set_of_string"/>
+    </type>
+
+    <type type="openshift.kubernetes.Cluster" extends="kubernetes.Cluster">
+        <property name="project"/>
+        <property name="username"/>
+        <property name="password" password="true"/>
     </type>
 
 
