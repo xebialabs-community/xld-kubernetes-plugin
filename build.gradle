@@ -11,17 +11,6 @@ apply plugin: "com.github.hierynomus.license"
 apply plugin: 'java'
 apply plugin: 'idea'
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url 'https://dist.xebialabs.com/public/maven2'
-    }
-    maven {
-        url 'http://www.knopflerfish.org/maven2'
-    }
-}
-
 processResources {
     filesMatching('**/plugin-version.properties') {
         expand(
@@ -29,11 +18,6 @@ processResources {
                 'project_name': rootProject.name
         )
     }
-}
-
-
-dependencies {
-    compile "com.xebialabs.deployit:udm-plugin-api:$apiVersion"
 }
 
 license {
