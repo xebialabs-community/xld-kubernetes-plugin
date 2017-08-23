@@ -6,7 +6,7 @@ deploy:
   provider: releases
   api_key:
     secure: FEzxA6oxvaff6KvMjOH+9ASAMS2EW2W2aXLOq6HM/Mt1Ale5q+f2Yzh22+ksqJvLraGw6qvorMrsAqL3zIm9DZG8uI5NcLJYb1K13msc4JFmbKUC0pl0HSTye+dVRmg7aOyBp//ql9hEas4mYhLsLvW5+LjdNRjwbqXPhT1+v0fG/8TOPGMdUWnBnDybcqKRT9F8gmRNbYhhOBf8fEty6AB5DmlXDoV0NQ7qNtHk2UxAG0LNwVov90i3IWyGDZmuRgXKUYXXVxs+4f6MKoqo3p9BfgCuNRBAY8gW5BB/1pontU9leoIa9LfdN/Yi0NJbsLog2GIZvi95md2pRqw4E0T4iAqKohhW/XnSD3IsJx2jIzDv9WKIzHjONCdLKBwi6ImP/NhVijj17nF43gAkffpoOtk/Z4NI4GNmais9BEC2nrPeD+93nUMv6WEp/hq64lk7wYJNvamPo42KtycVFPZj5Gz7PsOZB9NISq6jEFAIGzZgn4IG5+BLeW7kNi22PE5shDjL0G2HlyO7KsFPOlIfJ0XWAMGyJsPXIwnUHy5NSrZYiask2dHUFKaxD/PCq5/F6WvRHH/lCLmXvCZMQjfHKEGD4JuLexye63Z08tgEgPUbz2UuDN9ue+luul7UTcJiSMZ8FhIxdMg24cf7v9A+xMRbiiYImH7Rd0g4uQk=
-  file: build/distributions//xld-kubernetes-plugin-6.2.4.xldp
+  file: build/distributions//xld-kubernetes-plugin-6.2.5.xldp
   on:
     repo: xebialabs-community/xld-kubernetes-plugin
     all_branches: true
