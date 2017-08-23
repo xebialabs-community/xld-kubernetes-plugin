@@ -4,7 +4,7 @@
 
 # Overview #
 
-This plugin is a XL Deploy plugin that adds capability for deploying on a [Kubernetes Cluster](https://kubernetes.io/).
+This plugin is a XL Deploy plugin that adds capability for deploying on a [Kubernetes Cluster](https://kubernetes.io/) (including Openshift v3+)
 It manages the following items
 * Deployment,
 * Pod,
