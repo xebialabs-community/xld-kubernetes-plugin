@@ -15,13 +15,40 @@
         <conditions>
             <type>kubernetes.ExecutedResourceFile</type>
             <operation>CREATE</operation>
-            <operation>MODIFY</operation>
         </conditions>
         <steps>
             <os-script>
                 <order expression="true">deployed.createOrder</order>
-                <description expression="true">"Execute the '{0}' resource file on {1}".format(deployed.name, deployed.container.name)</description>
+                <description expression="true">"Creating the '{0}' resource  on {1}".format(deployed.name, deployed.container.name)</description>
                 <script>xldk8s/execute_create</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.resource.file.modify" scope="deployed">
+        <conditions>
+            <type>kubernetes.ExecutedResourceFile</type>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order expression="true">deployed.modifyOrder</order>
+                <description expression="true">"Updating the '{0}' resource  on {1}".format(deployed.name, deployed.container.name)</description>
+                <script>xldk8s/execute_update</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.resource.file.undeploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.ExecutedResourceFile</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order expression="true">previousDeployed.destroyOrder</order>
+                <description expression="true">"Deleting the '{0}' resource  on {1}".format(previousDeployed.name, previousDeployed.container.name)</description>
+                <script>xldk8s/execute_undeploy</script>
             </os-script>
         </steps>
     </rule>

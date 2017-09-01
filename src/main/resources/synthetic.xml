@@ -179,6 +179,7 @@
         <generate-deployable type="kubernetes.ResourceFile" extends="udm.BaseDeployableFileArtifact"/>
         <property category="Advanced" name="createOrder" kind="integer" default="60"/>
         <property category="Advanced" name="destroyOrder" kind="integer" default="42"/>
+        <property category="Advanced" name="modifyOrder" kind="integer" default="61"/>
     </type>
 
     <type-modification type="kubernetes.ResourceFile">

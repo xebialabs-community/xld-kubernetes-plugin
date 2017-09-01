@@ -6,6 +6,6 @@
 
 -->
 <#include "/xldk8s/setup.ftl">
-echo "WIll execute ${kubectl} create --filename=${deployed.file.path} --validate=${deployed.container.validate?string('true', 'false')}"
-${kubectl} create --filename=${deployed.file.path} --validate=${deployed.container.validate?string('true', 'false')}
+echo "Will execute ${kubectl} apply --filename=${deployed.file.path} --validate=${deployed.container.validate?string('true', 'false')}"
+${kubectl} apply --filename=${deployed.file.path} --validate=${deployed.container.validate?string('true', 'false')}
 <#include "/xldk8s/teardown.ftl">
