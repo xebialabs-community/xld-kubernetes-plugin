@@ -1,3 +1,5 @@
+Deprecated plugin, please use the supported version https://docs.xebialabs.com/xl-deploy/concept/xl-deploy-kubernetes-plugin.html
+
 # xld-kubernetes-plugin
 
 <img src="https://kubernetes.io/images/favicon.png" width="200" height="200"/>
