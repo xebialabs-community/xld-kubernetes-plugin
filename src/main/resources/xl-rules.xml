@@ -53,7 +53,47 @@
         </steps>
     </rule>
 
+    <rule name="kubernetes.resource.file.secret.tls.deploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.ExecutedResourceFileTlsSecret</type>
+            <operation>CREATE</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order expression="true">deployed.createOrder</order>
+                <description expression="true">"Creating the '{0}' resource  on {1}".format(deployed.name, deployed.container.name)</description>
+                <script>xldk8s/execute_create_tls</script>
+            </os-script>
+        </steps>
+    </rule>
 
+    <rule name="kubernetes.resource.file.secret.tls.modify" scope="deployed">
+        <conditions>
+            <type>kubernetes.ExecutedResourceFileTlsSecret</type>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order expression="true">deployed.modifyOrder</order>
+                <description expression="true">"Updating the '{0}' resource  on {1}".format(deployed.name, deployed.container.name)</description>
+                <script>xldk8s/execute_update_tls</script>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="kubernetes.resource.file.secret.tls.undeploy" scope="deployed">
+        <conditions>
+            <type>kubernetes.ExecutedResourceFileTlsSecret</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order expression="true">previousDeployed.destroyOrder</order>
+                <description expression="true">"Deleting the '{0}' resource  on {1}".format(previousDeployed.name, previousDeployed.container.name)</description>
+                <script>xldk8s/execute_undeploy_tls</script>
+            </os-script>
+        </steps>
+    </rule>
     <rule name="kubernetes.service.deploy" scope="deployed">
         <conditions>
             <type>kubernetes.Service</type>

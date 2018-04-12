@@ -181,8 +181,25 @@
         <property category="Advanced" name="destroyOrder" kind="integer" default="42"/>
         <property category="Advanced" name="modifyOrder" kind="integer" default="61"/>
     </type>
-
     <type-modification type="kubernetes.ResourceFile">
+        <property name="textFileNamesRegex" default=".+\.(yml | yaml | json | jsonp )" hidden="true"/>
+    </type-modification>
+
+    <type type="kubernetes.ExecutedResourceFileTlsSecret" deployable-type="kubernetes.ResourceFileTlsSecret"
+          extends="udm.BaseDeployedArtifact" container-type="kubernetes.Cluster">
+        <generate-deployable type="kubernetes.ResourceFileTlsSecret" extends="udm.BaseDeployableFolderArtifact"/>
+        <property category="Advanced" name="createOrder" kind="integer" default="60"/>
+        <property category="Advanced" name="destroyOrder" kind="integer" default="42"/>
+        <property category="Advanced" name="modifyOrder" kind="integer" default="61"/>
+        <property name="serverCrt" default="server.crt"/>
+        <property name="serverKey" default="server.key"/>
+        <property name="tlsSecretname" default="sysdigcloud-ssl-secret"/>
+        <property name="namespace" default="sysdigcloud"/>
+
+    </type>
+
+
+    <type-modification type="kubernetes.ResourceFileTlsSecret">
         <property name="textFileNamesRegex" default=".+\.(yml | yaml | json | jsonp )" hidden="true"/>
     </type-modification>
 

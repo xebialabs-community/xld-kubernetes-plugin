@@ -6,6 +6,8 @@
 
 -->
 <#include "/xldk8s/setup.ftl">
-echo "WIll execute ${kubectl} create --filename=${deployed.file.path} --validate=${deployed.container.validate?string('true', 'false')} --save-config"
-${kubectl} create --filename=${deployed.file.path} --validate=${deployed.container.validate?string('true', 'false')} --save-config
+echo "${kubectl} delete secret ${previousDeployed.tlsSecretname} --namespace=${previousDeployed.namespace}"
+${kubectl} delete secret ${previousDeployed.tlsSecretname} --namespace=${previousDeployed.namespace}
 <#include "/xldk8s/teardown.ftl">
+
+
